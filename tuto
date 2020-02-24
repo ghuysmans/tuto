@@ -29,8 +29,11 @@ show)
 generate)
 	#TODO optional pandoc filter (Lua) for macros?
 	for commit in $(git log --reverse --pretty=%H); do
-		#TODO allow hiding the title
-		git show --pretty="## %s%n%n%b" --no-patch $commit
+		if [ "$2" = "--no-title" ]; then
+			git show --pretty="%b" --no-patch $commit
+		else
+			git show --pretty="## %s%n%n%b" --no-patch $commit
+		fi
 		set +e
 		tag=$(git describe --tags $commit 2>/dev/null)
 		set -e
