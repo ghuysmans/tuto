@@ -31,7 +31,11 @@ generate)
 	for commit in $(git log --reverse --pretty=%H); do
 		#TODO allow hiding the title
 		git show --pretty="## %s%n%n%b" --no-patch $commit
-		git show --pretty="Commit %h:" --no-patch $commit
+		set +e
+		tag=$(git describe --tags $commit 2>/dev/null)
+		set -e
+		[ -n "$tag" ] && echo Tag $tag: ||
+			git show --pretty="Commit %h:" --no-patch $commit
 		echo "\`\`\`diff"
 		git show --pretty="" --diff-filter=AM -b $commit |
 			grep -v -e "^\(index\|new file\|---\|+++\) "
