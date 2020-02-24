@@ -1,0 +1,59 @@
+#!/bin/sh
+set -e
+
+case $1 in
+init)
+	guilt init || true
+	mkdir "$2"
+	echo '*~\nstatus' >$2/.gitignore #FIXME more quotes?
+	ROOT=$(git rev-parse --show-toplevel)
+	BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	mv $ROOT/.git/patches/$BRANCH/* "$2"
+	rmdir $ROOT/.git/patches/$BRANCH
+	ln -rs "$2" $ROOT/.git/patches/$BRANCH
+	echo "$0: initialized"
+	;;
+commit)
+	#FIXME handle corner cases
+	guilt new -f -e "$2"
+	;;
+diff)
+	shift
+	git diff $*
+	;;
+show)
+	shift
+	git show $*
+	#guilt diff would return new changes as well
+	;;
+generate)
+	#TODO optional pandoc filter (Lua) for macros?
+	for commit in $(git log --reverse --pretty=%H); do
+		#TODO allow hiding the title
+		git show --pretty="## %s%n%n%b" --no-patch $commit
+		git show --pretty="Commit %h:" --no-patch $commit
+		echo "\`\`\`diff"
+		git show --pretty="" --diff-filter=AM -b $commit |
+			grep -v -e "^\(index\|new file\|---\|+++\) "
+		echo "\`\`\`"
+		echo
+	done
+	;;
+upload)
+	git push
+	#FIXME create tags... but how?
+	#TODO delete old ones?
+	#TODO prefix non-master
+	git push --tags
+	echo "TODO upload"
+	;;
+reset)
+	git reset HEAD -- "$2"
+	;;
+help)
+	echo "TODO help"
+	;;
+*)
+	guilt $*
+	;;
+esac
