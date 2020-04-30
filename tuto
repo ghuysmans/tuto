@@ -7,10 +7,10 @@ case $1 in
 	exit 1;;
 init)
 	guilt init || true
-	mkdir "$2"
-	echo '*~\nstatus' >$2/.gitignore #FIXME more quotes?
 	ROOT=$(git rev-parse --show-toplevel)
 	BRANCH=$(git rev-parse --abbrev-ref HEAD)
+	mkdir "$2"
+	echo '*~\nstatus' >$2/.gitignore #FIXME more quotes?
 	mv $ROOT/.git/patches/$BRANCH/* "$2"
 	rmdir $ROOT/.git/patches/$BRANCH
 	ln -rs "$2" $ROOT/.git/patches/$BRANCH
