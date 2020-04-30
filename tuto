@@ -31,7 +31,7 @@ show)
 	;;
 generate)
 	#TODO optional pandoc filter (Lua) for macros?
-	for commit in $(git log --reverse --pretty=%H); do
+	for commit in $(git log --reverse --pretty=%H master..); do
 		if [ "$2" = "--no-title" ]; then
 			git show --pretty="%b" --no-patch $commit
 		else
