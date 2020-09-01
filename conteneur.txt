@@ -1,0 +1,6 @@
+tuto intégré à l'environnement Google !
+	préparer un lien tout fait, du genre :
+	https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/manekinekko/actions-on-google-i18n&page=editor&open_in_editor=index.js
+	liens, raccourcis vers des commandes pour avancer dans les étapes !
+un conteneur contourne la limite d'espace
+il peut être installé où on veut, pas que chez Google

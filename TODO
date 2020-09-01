@@ -1,0 +1,31 @@
+démo :
+$ TODO edit
+$ TODO rollback
+
+guilt-free generate (joli message de commit) mais besoin de getopt...
+
+pour Travis CI :
+- init qui commit :
+	un README avec le lien vers le workspace
+	un yml qui wget le script et lance la suite
+		ce yml est un heredoc, gaffe à l'expansion des variables
+- une commande qui génère gh-pages
+	écrire temporaire
+	garder $hash
+	checkout
+	déplacer temporaire
+	commit -m $hash
+	push
+	checkout
+- une commande qui génère workspace
+	apply
+	push
+	push tags
+
+argh, ça ne marche bien que si les commits sont "déterministes"
+sinon il faut tenir compte de ce qu'a fait le développeur
+j'imagine que la date du commit est celle du patch
+mais il est dans git... meh
+
+adapter un tuto Eliom pour voir si ça tient la route :
+https://github.com/ocsigen/tuto/blob/master/tutos/dev/manual/interaction.wiki
